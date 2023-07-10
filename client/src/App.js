@@ -1,12 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./global/Navbar";
+import Navbar from "./global/Navbar/Navbar";
 import Home from "./global/Home";
 import Footer from "./global/Footer";
 
+
 import {
+  About,
   ContactUs,
-  NewsLetter,
   SavedBlog,
 } from "./components/index";
 
@@ -16,8 +17,8 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/savedBlog" element={<SavedBlog />} />
-        <Route path="/newsLetter" element={<NewsLetter />} />
         <Route path="/contactUs" element={<ContactUs />} />
       </Routes>
       <Footer />
