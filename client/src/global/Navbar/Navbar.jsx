@@ -1,6 +1,6 @@
 import React from "react";
 import { useTheme } from "@emotion/react";
-import { shades } from "../../theme";
+import { shades} from "../../theme";
 import {
   AppBar,
   Box,
@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import AdbIcon from "@mui/icons-material/Adb";
 import SearchIcon from "@mui/icons-material/Search";
 
 import {
@@ -27,7 +26,7 @@ import {
   settings,
 } from "./Search";
 
-const Navbar = () => {
+const Navbar = (theme) => {
   const {
     palette: { neutral },
   } = useTheme();
@@ -70,7 +69,7 @@ const Navbar = () => {
             The Creative Corner
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ flexGrow: {xs:1, sm:0.2}, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -109,7 +108,7 @@ const Navbar = () => {
             </Menu>
           </Box>
           <Typography
-            variant="h4"
+          variant="h4"
             noWrap
             component="a"
             href=""
@@ -130,7 +129,6 @@ const Navbar = () => {
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: "white",
                   display: "block",
                   color: shades.primary[900],
                 }}
@@ -143,9 +141,7 @@ const Navbar = () => {
           <Toolbar
             sx={{
               flexGrow: 1,
-              display: { xs: "none", sm: "block" },
-              display: "flex",
-              // backgroundColor: "red"
+              display: { xs: "none", sm: "flex"},
             }}
           >
             <Search sx={{ color: shades.primary[900] }}>
