@@ -8,7 +8,7 @@ import ImageListItemBar from "@mui/material/ImageListItemBar";
 import ListSubheader from "@mui/material/ListSubheader";
 import IconButton from "@mui/material/IconButton";
 import InfoIcon from "@mui/icons-material/Info";
-import AcUnitIcon from '@mui/icons-material/AcUnit';
+import AcUnitIcon from "@mui/icons-material/AcUnit";
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3),
@@ -53,13 +53,15 @@ const About = () => {
           Welcome to Our Blogging Community
         </Typography>
       </Box>
+      <ListSubheader
+        component="div"
+        sx={{ marginBottom: "20px", position: "relative" }}
+      >
+        <Typography variant="h3">{months[date.getMonth()]} </Typography>
+      </ListSubheader>
 
-      <ImageList sx={{ width: "100%", height: 440, marginBottom: "40px"}}>
-        <ImageListItem key="Subheader" cols={3}>
-          <ListSubheader component="div">
-            <Typography variant="h3">{months[date.getMonth()]} </Typography>
-          </ListSubheader>
-        </ImageListItem>
+      <ImageList sx={{ width: "100%", height: 400 }}>
+        <ImageListItem key="Subheader" cols={2}></ImageListItem>
         {itemData.map((item) => (
           <ImageListItem key={item.img}>
             <img
@@ -84,34 +86,34 @@ const About = () => {
         ))}
       </ImageList>
 
-      <Typography variant="body1" sx={{margin: "5px 0 15px"}}>
-       <AcUnitIcon /> At our blogging community, we provide a platform for individuals to
-        express their thoughts, ideas, and experiences through blogging. Whether
-        you're a seasoned writer or just starting out, this is the place for you
-        to share your stories with a wider audience.
+      <Typography variant="body1" sx={{ margin: "5px 0 15px" }}>
+        <AcUnitIcon /> At our blogging community, we provide a platform for
+        individuals to express their thoughts, ideas, and experiences through
+        blogging. Whether you're a seasoned writer or just starting out, this is
+        the place for you to share your stories with a wider audience.
       </Typography>
       <Typography variant="h6" css={styles.subtitle}>
-      <AcUnitIcon /> Create Your Own Blog
+        <AcUnitIcon /> Create Your Own Blog
       </Typography>
-      <Typography variant="body1" sx={{margin: "5px 0 15px"}}>
+      <Typography variant="body1" sx={{ margin: "5px 0 15px" }}>
         We believe that everyone has a unique perspective to offer. By creating
         your own blog, you can unleash your creativity and connect with
         like-minded individuals. Share your passions, insights, and expertise
         with the world.
       </Typography>
       <Typography variant="h6" css={styles.subtitle}>
-      <AcUnitIcon /> Explore a Variety of Blogs
+        <AcUnitIcon /> Explore a Variety of Blogs
       </Typography>
-      <Typography variant="body1" sx={{margin: "5px 0 15px"}}>
+      <Typography variant="body1" sx={{ margin: "5px 0 15px" }}>
         Dive into a diverse collection of blogs created by our community
         members. From travel adventures and lifestyle tips to technology trends
         and personal growth, there's something for everyone. Discover new ideas,
         gain knowledge, and engage in meaningful discussions.
       </Typography>
       <Typography variant="h6" css={styles.subtitle}>
-      <AcUnitIcon /> Join Our Community
+        <AcUnitIcon /> Join Our Community
       </Typography>
-      <Typography variant="body1" sx={{margin: "5px 0 15px"}}>
+      <Typography variant="body1" sx={{ margin: "5px 0 15px" }}>
         We invite you to become a part of our vibrant blogging community.
         Connect with fellow bloggers, provide feedback, and find inspiration.
         Start your blogging journey today and let your voice be heard.
