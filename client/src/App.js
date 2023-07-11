@@ -8,7 +8,7 @@ import Footer from "./global/Footer";
 import {
   About,
   ContactUs,
-  SavedBlog,
+  SavedBlogs,
 } from "./components/index";
 
 const App = () => {
@@ -18,7 +18,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/savedBlog" element={<SavedBlog />} />
+        <Route path="/savedBlogs" element={<SavedBlogs />} />
         <Route path="/contactUs" element={<ContactUs />} />
       </Routes>
       <Footer />
