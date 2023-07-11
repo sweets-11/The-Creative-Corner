@@ -1,6 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useTheme } from "@emotion/react";
-import { shades} from "../../theme";
+import { shades } from "../../theme";
 import {
   AppBar,
   Box,
@@ -31,7 +32,6 @@ const Navbar = (theme) => {
     palette: { neutral },
   } = useTheme();
 
-  
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -69,7 +69,12 @@ const Navbar = (theme) => {
             The Creative Corner
           </Typography>
 
-          <Box sx={{ flexGrow: {xs:1, sm:0.2}, display: { xs: "flex", md: "none" } }}>
+          <Box
+            sx={{
+              flexGrow: { xs: 1, sm: 0.2 },
+              display: { xs: "flex", md: "none" },
+            }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -78,7 +83,7 @@ const Navbar = (theme) => {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon sx={{color: shades.primary[500]}}/>
+              <MenuIcon sx={{ color: shades.primary[500] }} />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -100,15 +105,24 @@ const Navbar = (theme) => {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" color={"black"}>
-                    {page}
-                  </Typography>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={
+                      page === "Home"
+                        ? "/"
+                        : `/${page.replace(/\s+/g, "").toLowerCase()}`
+                    }
+                  >
+                    <Typography textAlign="center" color={"black"}>
+                      {page}
+                    </Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
           <Typography
-          variant="h4"
+            variant="h4"
             noWrap
             component="a"
             href=""
@@ -133,7 +147,18 @@ const Navbar = (theme) => {
                   color: shades.primary[900],
                 }}
               >
-                {page}
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={
+                    page === "Home"
+                      ? "/"
+                      : `/${page.replace(/\s+/g, "").toLowerCase()}`
+                  }
+                >
+                  <Typography textAlign="center" color={"black"}>
+                    {page}
+                  </Typography>
+                </Link>
               </Button>
             ))}
           </Box>
@@ -141,7 +166,7 @@ const Navbar = (theme) => {
           <Toolbar
             sx={{
               flexGrow: 1,
-              display: { xs: "none", sm: "flex"},
+              display: { xs: "none", sm: "flex" },
             }}
           >
             <Search sx={{ color: shades.primary[900] }}>
