@@ -1,8 +1,9 @@
 import React from "react";
-import {Carousel} from "../components/index";
+import {Carousel, Blog} from "../components/index";
 const Home = () => {
   return <>
   <Carousel />
+  <Blog />
   </>;
 };
 
