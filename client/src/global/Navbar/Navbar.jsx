@@ -215,7 +215,14 @@ const Navbar = (theme) => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={setting === "Create Blog" ? "/createBlog" : "/auth"}
+                  >
+                    <Typography textAlign="center" color={"black"}>
+                      {setting}
+                    </Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
