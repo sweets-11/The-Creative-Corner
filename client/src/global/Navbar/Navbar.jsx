@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { shades } from "../../theme";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
 import {
   AppBar,
   Box,
@@ -27,7 +29,7 @@ import {
   settings,
 } from "./Search";
 
-const Navbar = (theme) => {
+const Navbar = (theme, { setIsAuth }) => {
   const {
     palette: { neutral },
   } = useTheme();
@@ -50,6 +52,15 @@ const Navbar = (theme) => {
     setAnchorElUser(null);
   };
 
+  //logout
+  const signUserOut = () => {
+    signOut(auth).then(() => {
+      localStorage.clear();
+      setIsAuth(false);
+      window.location.pathname = "/login";
+    });
+  };
+
   return (
     <AppBar position="static" sx={{ backgroundColor: "neutral.light" }}>
       <Container maxWidth="xl">
@@ -58,7 +69,7 @@ const Navbar = (theme) => {
             variant="h3"
             noWrap
             component="a"
-            href="/"
+            href="/home"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -125,7 +136,7 @@ const Navbar = (theme) => {
             variant="h4"
             noWrap
             component="a"
-            href=""
+            href="/home"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -213,18 +224,15 @@ const Navbar = (theme) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Link
-                    style={{ textDecoration: "none" }}
-                    to={setting === "Create Blog" ? "/createBlog" : "/auth"}
-                  >
-                    <Typography textAlign="center" color={"black"}>
-                      {setting}
-                    </Typography>
-                  </Link>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Link style={{ textDecoration: "none" }} to="/createBlog">
+                  <Typography textAlign="center" color={"black"}>Create Blog</Typography>
+                </Link>
+              </MenuItem>
+
+              <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography onClick={signUserOut} textAlign="center" color={"black"}>Create Blog</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
