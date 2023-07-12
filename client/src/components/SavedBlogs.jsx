@@ -1,7 +1,13 @@
 import React from "react";
-
+import Navbar from "../global/Navbar/Navbar";
+import Footer from "../global/Footer";
 const SavedBlogs = () => {
-  return <div>SavedBlogs</div>;
+
+  return <div>
+      <Navbar />
+    SavedBlogs
+    <Footer />
+    </div>;
 };
 
 export default SavedBlogs;
