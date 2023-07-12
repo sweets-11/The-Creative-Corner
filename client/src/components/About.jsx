@@ -24,7 +24,7 @@ const styles = {
   `,
 };
 
-const About = () => {
+const About = ({setIsAuth}) => {
   const classes = useStyles();
   const date = new Date();
 
@@ -45,7 +45,7 @@ const About = () => {
 
   return (
     <>
-      <Navbar />;
+      <Navbar setIsAuth={setIsAuth} />;
       <Paper className={classes.root} elevation="5">
         <Box sx={{ display: "flex" }}>
           <Typography
