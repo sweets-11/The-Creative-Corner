@@ -1,16 +1,16 @@
 import { initializeApp } from "firebase/app";
-import {getAuth} from "firebase/auth";
-
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.APIKEY,
-  authDomain: process.env.AUTHDOMIN,
-  projectId: process.env.PROJECTID,
-  storageBucket: process.env.STORAGEBUCKET,
-  messagingSenderId: process.env.MESSAGINGSENDERID,
-  appId: process.env.APPID,
+  apiKey: "AIzaSyAe4UA-Z8Fp2WLfSXbtj-drGhuHwKtXSB0",
+  authDomain: "blog-b6924.firebaseapp.com",
+  projectId: "blog-b6924",
+  storageBucket: "blog-b6924.appspot.com",
+  messagingSenderId: "949725203655",
+  appId: "1:949725203655:web:18d0704bf100d122e402e2"
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const provider = new GoogleAuthProvider();
