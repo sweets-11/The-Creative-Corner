@@ -34,7 +34,7 @@ const Footer = () => {
         >
           <Typography variant="h4" fontWeight="bold" mb="30px">
             <Link
-              to="/"
+              to="/home"
               style={{ textDecoration: "none", color: shades.secondary[500] }}
             >
               The Creative Corner
