@@ -44,7 +44,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const pages = ["Home", "About", "Saved Blogs", "Contact Us"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Create Blog", "Logout"];
 
 
 export { Search, StyledInputBase, SearchIconWrapper, pages, settings};
