@@ -1,28 +1,31 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./global/Navbar/Navbar";
-import Home from "./global/Home";
-import Footer from "./global/Footer";
-
-
+import React, { useState } from "react";
 import {
-  About,
-  ContactUs,
-  SavedBlogs,
-} from "./components/index";
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Home from "./global/Home";
+import Auth from "./auth/Auth";
+import { About, ContactUs, SavedBlogs, CreateBlog } from "./components/index";
+import { useSelector } from "react-redux";
+import CurrentBlog from "./components/CurrentBlog";
 
 const App = () => {
+  const initialEmail = Boolean(useSelector((state) => state.auth.email));
+  console.log(initialEmail);
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/savedBlogs" element={<SavedBlogs />} />
-        <Route path="/contactUs" element={<ContactUs />} />
-      </Routes>
-      <Footer />
-    </Router>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Auth />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/savedBlogs" element={<SavedBlogs />} />
+          <Route path="/contactUs" element={<ContactUs />} />
+          <Route path="/createBlog" element={<CreateBlog />} />
+          <Route path="/currentBlog/:blogId}" element={<CurrentBlog />} />
+        </Routes>
+      </Router>
   );
 };
 

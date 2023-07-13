@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { shades } from "../../theme";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
 import {
   AppBar,
   Box,
@@ -24,10 +26,16 @@ import {
   StyledInputBase,
   SearchIconWrapper,
   pages,
-  settings,
 } from "./Search";
 
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store";
+import { useNavigate } from "react-router-dom";
+
 const Navbar = (theme) => {
+  const isAuth = useSelector((state) => state.auth.isAuth);
+  const dispatch = useDispatch();
+
   const {
     palette: { neutral },
   } = useTheme();
@@ -50,6 +58,15 @@ const Navbar = (theme) => {
     setAnchorElUser(null);
   };
 
+  const navigate = useNavigate();
+  //logout
+  const signUserOut = () => {
+    signOut(auth).then(() => {
+      dispatch(logout());
+      navigate("/");
+    });
+  };
+
   return (
     <AppBar position="static" sx={{ backgroundColor: "neutral.light" }}>
       <Container maxWidth="xl">
@@ -58,7 +75,7 @@ const Navbar = (theme) => {
             variant="h3"
             noWrap
             component="a"
-            href="/"
+            href="/home"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -109,7 +126,7 @@ const Navbar = (theme) => {
                     style={{ textDecoration: "none" }}
                     to={
                       page === "Home"
-                        ? "/"
+                        ? "/home"
                         : `/${page.replace(/\s+/g, "").toLowerCase()}`
                     }
                   >
@@ -125,7 +142,7 @@ const Navbar = (theme) => {
             variant="h4"
             noWrap
             component="a"
-            href=""
+            href="/home"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -151,7 +168,7 @@ const Navbar = (theme) => {
                   style={{ textDecoration: "none" }}
                   to={
                     page === "Home"
-                      ? "/"
+                      ? "/home"
                       : `/${page.replace(/\s+/g, "").toLowerCase()}`
                   }
                 >
@@ -193,8 +210,15 @@ const Navbar = (theme) => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>    
+              <Avatar aria-label="recipe">
+                <img
+                  style={{ width: "100%" }}
+                  src={localStorage.getItem("pic")}
+                  alt=""
+                />
+              </Avatar>
+        
               </IconButton>
             </Tooltip>
             <Menu
@@ -213,11 +237,19 @@ const Navbar = (theme) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Link style={{ textDecoration: "none" }} to="/createBlog">
+                  <Typography textAlign="center" color={"black"}>
+                    Create Blog
+                  </Typography>
+                </Link>
+              </MenuItem>
+
+              <MenuItem onClick={signUserOut}>
+                <Typography textAlign="center" color={"black"}>
+                  Logout
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
