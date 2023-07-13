@@ -4,7 +4,7 @@ import { app } from "../config/firebase";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../store";
+import { login, profile } from "../store";
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -18,8 +18,11 @@ const Auth = () => {
       .then((result) => {
         const name = result.user.displayName;
         const email = result.user.email;
-        dispatch(login({name: name, email: email}))
-        navigate("/home")
+        const photoUrl = result.user.photoURL;
+
+        dispatch(profile({ "pic": photoUrl }));
+        dispatch(login({ name: name, email: email }));
+        navigate("/home");
       })
       .catch((error) => {
         console.log(error);

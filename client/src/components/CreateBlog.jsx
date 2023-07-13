@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./createBlog.css";
 import { useNavigate } from "react-router-dom";
 import { db, storage, auth } from "../config/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 import {
   Container,
@@ -44,6 +44,7 @@ const CreateBlog = () => {
         shortDesc: blogTitle,
         longDesc: blogDescription,
         CurrentUserId: auth?.currentUser?.uid,
+        Timestamp: serverTimestamp(),
       });
       alert("succ");
       navigate("/home");
