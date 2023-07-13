@@ -1,112 +1,145 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Auth from "../auth/Auth";
+import { db, storage, auth } from "../config/firebase";
+import {
+  getDocs,
+  collection,
+  addDoc,
+  deleteDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Box,
+} from "@mui/material";
+import { styled } from "@mui/system";
 import Navbar from "../global/Navbar/Navbar";
 import Footer from "../global/Footer";
-import { css } from "@emotion/react";
-import { Button, TextField, Grid, Box } from '@mui/material';
 
-
-
-const formStyles = css`
-  padding: 2rem;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+const FormContainer = styled(Container)`
+  padding: 20px;
 `;
 
+const FormTitle = styled(Typography)`
+  text-align: center;
+  margin: 30px 0 20px;
+`;
 
 const CreateBlog = () => {
+  // New Movie States
+  const [imageURL, setImageURL] = useState("");
+  const [blogTitle, setBlogTitle] = useState("");
+  const [blogDescription, setBlogDescription] = useState("");
+  const [blogImageUpload, setBlogImageUpload] = useState(null);
 
-  const [imageFile, setImageFile] = useState(null);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const blogsCollectionRef = collection(db, "posts");
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setImageFile(file);
+    setBlogImageUpload(file);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Perform form submission logic here, e.g., sending data to the server
-    console.log('Image:', imageFile);
-    console.log('Title:', title);
-    console.log('Description:', description);
-    // Reset the form fields
-    setImageFile(null);
-    setTitle('');
-    setDescription('');
+  //create blog posts
+  const CreateBlogPosts = async () => {
+    try {
+      await addDoc(blogsCollectionRef, {
+        user: auth?.currentUser?.displayName,
+        mailId: auth?.currentUser?.email,
+        imgUrl: imageURL,
+        shortDesc: blogTitle,
+        longDesc: blogDescription,
+        CurrentUserId: auth?.currentUser?.uid,
+      });
+      // getBlogsList();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  //upload file
+  const uploadBlog = async () => {
+    if (!blogImageUpload) return;
+    const filesFolderRef = ref(storage, `images/${blogImageUpload.name}`);
+    try {
+      await uploadBytes(filesFolderRef, blogImageUpload)
+        .then(() => {
+          const downloadUrl = getDownloadURL(filesFolderRef);
+          return downloadUrl;
+        })
+        .then((url) => {
+          setImageURL((prevImages) => [...prevImages, url]);
+        });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <>
-    <Navbar />
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      marginTop={"80px"}
-    >
-      <Grid item xs={12} sm={8} md={6} lg={6}>
-        <Box
-          css={formStyles}
-          boxShadow={4}
-        >
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="upload-file">
-              <Button
-                component="span"
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                Upload Image
-              </Button>
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-              id="upload-file"
-            />
-
+      <Navbar />
+      <FormContainer>
+        <FormTitle variant="h2">Create Blog</FormTitle>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              component="label"
+            >
+              Upload Image
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
             <TextField
               label="Title"
               variant="outlined"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              margin="normal"
+              value={blogTitle}
+              onChange={(e) => setBlogTitle(e.target.value)}
               fullWidth
-              required="true"
+              required
             />
-
+          </Grid>
+          <Grid item xs={12}>
             <TextField
               label="Description"
               variant="outlined"
               multiline
               rows={4}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              margin="normal"
+              value={blogDescription}
+              onChange={(e) => setBlogDescription(e.target.value)}
               fullWidth
-              required="true"
+              required
             />
-
+          </Grid>
+          <Grid item xs={12}>
             <Button
               type="submit"
               variant="contained"
               color="primary"
               fullWidth
+              onClick={CreateBlogPosts}
             >
               Upload
             </Button>
-          </form>
-        </Box>
-      </Grid>
-    </Grid>
-    <Footer />
+          </Grid>
+        </Grid>
+      </FormContainer>
+      <Footer />
     </>
   );
 };
-
 export default CreateBlog;
