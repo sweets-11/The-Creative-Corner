@@ -16,10 +16,7 @@ import {
 
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
-import PrintIcon from "@mui/icons-material/Print";
-import ShareIcon from "@mui/icons-material/Share";
 import { useNavigate } from "react-router-dom";
-import CurrentBlog from "./CurrentBlog";
 
 import { db } from "../config/firebase";
 import { getDocs, collection } from "firebase/firestore";
@@ -92,7 +89,7 @@ const Blog = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="space-around">
+    <Box sx={{display:{sm: "none",md: "flex", lg:"flex"}}} justifyContent="space-around">
       {blogList.map((userr) => {
         return (
           <Card
