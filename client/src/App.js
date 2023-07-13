@@ -3,22 +3,17 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 import Home from "./global/Home";
 import Auth from "./auth/Auth";
 import { About, ContactUs, SavedBlogs, CreateBlog } from "./components/index";
-import { store } from "./store";
-import { Provider} from "react-redux";
-import {inisAuthenticated} from "./auth/Auth";
-if(inisAuthenticated === "false" ) {
-  <Navigate to="/" />
-}
-const App = () => {
+import { useSelector } from "react-redux";
 
+const App = () => {
+  const initialEmail = Boolean(useSelector((state) => state.auth.email));
+  console.log(initialEmail);
   return (
-    <Provider store={store}>
       <Router>
         <Routes>
           <Route path="/" element={<Auth />} />
@@ -29,7 +24,6 @@ const App = () => {
           <Route path="/createBlog" element={<CreateBlog />} />
         </Routes>
       </Router>
-    </Provider>
   );
 };
 

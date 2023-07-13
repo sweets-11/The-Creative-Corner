@@ -3,12 +3,11 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../config/firebase";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../store";
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-export const isAuthenticated = useSelector((state) => state?.auth?.isAuthenticated);
 
 const Auth = () => {
   const dispatch = useDispatch();
@@ -17,8 +16,10 @@ const Auth = () => {
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        dispatch(login());
-        navigate("/home");
+        const name = result.user.displayName;
+        const email = result.user.email;
+        dispatch(login({name: name, email: email}))
+        navigate("/home")
       })
       .catch((error) => {
         console.log(error);

@@ -31,6 +31,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = (theme) => {
   const isAuth = useSelector((state) => state.auth.isAuth);
@@ -58,11 +59,12 @@ const Navbar = (theme) => {
     setAnchorElUser(null);
   };
 
+  const navigate = useNavigate();
   //logout
   const signUserOut = () => {
     signOut(auth).then(() => {
       dispatch(logout());
-      window.location.pathname = "/";
+      navigate("/");
     });
   };
 
