@@ -29,7 +29,14 @@ import {
   settings,
 } from "./Search";
 
-const Navbar = (theme, { setIsAuth }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store";
+import { useNavigate } from "react-router-dom";
+
+const Navbar = (theme) => {
+  const isAuth = useSelector((state) => state.auth.isAuth);
+  const dispatch = useDispatch();
+
   const {
     palette: { neutral },
   } = useTheme();
@@ -52,12 +59,12 @@ const Navbar = (theme, { setIsAuth }) => {
     setAnchorElUser(null);
   };
 
+  const navigate = useNavigate();
   //logout
   const signUserOut = () => {
     signOut(auth).then(() => {
-      localStorage.clear();
-      setIsAuth(false);
-      window.location.pathname = "/login";
+      dispatch(logout());
+      navigate("/");
     });
   };
 
@@ -226,12 +233,16 @@ const Navbar = (theme, { setIsAuth }) => {
             >
               <MenuItem onClick={handleCloseUserMenu}>
                 <Link style={{ textDecoration: "none" }} to="/createBlog">
-                  <Typography textAlign="center" color={"black"}>Create Blog</Typography>
+                  <Typography textAlign="center" color={"black"}>
+                    Create Blog
+                  </Typography>
                 </Link>
               </MenuItem>
 
-              <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography onClick={signUserOut} textAlign="center" color={"black"}>Create Blog</Typography>
+              <MenuItem onClick={signUserOut}>
+                <Typography textAlign="center" color={"black"}>
+                  Logout
+                </Typography>
               </MenuItem>
             </Menu>
           </Box>
