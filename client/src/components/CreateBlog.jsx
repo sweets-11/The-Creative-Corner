@@ -1,17 +1,14 @@
 import React, { useState } from "react";
+
 import "./createBlog.css";
 import { useNavigate } from "react-router-dom";
-import { db, storage, auth } from "../config/firebase";
 import { collection, addDoc } from "firebase/firestore";
 
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Grid,
-  Box,
-} from "@mui/material";
+import { db, storage, auth } from "../config/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+
+import { Container, Typography, TextField, Button, Grid } from "@mui/material";
 import { styled } from "@mui/system";
 import Navbar from "../global/Navbar/Navbar";
 import Footer from "../global/Footer";
@@ -52,6 +49,8 @@ const CreateBlog = () => {
     }
   };
 
+
+
   return (
     <>
       <Navbar />
@@ -75,8 +74,24 @@ const CreateBlog = () => {
               value={imageURL}
               onChange={(e) => setImageURL(e.target.value)}
               fullWidth
+
               required={true}
             />
+
+              component="label"
+            >
+              Upload Image
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) => {
+                  setBlogImageUpload(event.target.files[0]);
+                }}
+                onClick={uploadBlog}
+                style={{ display: "none" }}
+              />
+            </Button>
+
           </Grid>
           <Grid item xs={12}>
             <TextField
@@ -104,7 +119,7 @@ const CreateBlog = () => {
           </Grid>
           <Grid item xs={12}>
             <Button
-              type="submit"
+              type="button"
               variant="contained"
               color="primary"
               fullWidth
