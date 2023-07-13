@@ -1,24 +1,9 @@
-import React, { useState, useEffect } from "react";
-import Auth from "../auth/Auth";
+import React, { useState } from "react";
 import { db, storage, auth } from "../config/firebase";
-import {
-  getDocs,
-  collection,
-  addDoc,
-  deleteDoc,
-  updateDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  Grid,
-  Box,
-} from "@mui/material";
+import { Container, Typography, TextField, Button, Grid } from "@mui/material";
 import { styled } from "@mui/system";
 import Navbar from "../global/Navbar/Navbar";
 import Footer from "../global/Footer";
@@ -41,10 +26,7 @@ const CreateBlog = () => {
 
   const blogsCollectionRef = collection(db, "posts");
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setBlogImageUpload(file);
-  };
+
 
   //create blog posts
   const CreateBlogPosts = async () => {
@@ -64,22 +46,15 @@ const CreateBlog = () => {
   };
 
   //upload file
-  const uploadBlog = async () => {
+  const uploadBlog =  () => {
     if (!blogImageUpload) return;
     const filesFolderRef = ref(storage, `images/${blogImageUpload.name}`);
-    try {
-      await uploadBytes(filesFolderRef, blogImageUpload)
-        .then(() => {
-          const downloadUrl = getDownloadURL(filesFolderRef);
-          return downloadUrl;
-        })
-        .then((url) => {
-          setImageURL((prevImages) => [...prevImages, url]);
+       uploadBytes(filesFolderRef, blogImageUpload).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setImageURL((prev) => [...prev, url]);
         });
-    } catch (err) {
-      console.error(err);
-    }
-  };
+      });
+    };
 
   return (
     <>
@@ -98,7 +73,10 @@ const CreateBlog = () => {
               <input
                 type="file"
                 accept="image/*"
-                onChange={handleFileChange}
+                onChange={(event) => {
+                  setBlogImageUpload(event.target.files[0]);
+                }}
+                onClick={uploadBlog}
                 style={{ display: "none" }}
               />
             </Button>
@@ -127,7 +105,7 @@ const CreateBlog = () => {
           </Grid>
           <Grid item xs={12}>
             <Button
-              type="submit"
+              type="button"
               variant="contained"
               color="primary"
               fullWidth
