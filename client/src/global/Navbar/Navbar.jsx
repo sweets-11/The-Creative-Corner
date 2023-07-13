@@ -26,7 +26,6 @@ import {
   StyledInputBase,
   SearchIconWrapper,
   pages,
-  settings,
 } from "./Search";
 
 import { useDispatch, useSelector } from "react-redux";
