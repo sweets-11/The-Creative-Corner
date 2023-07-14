@@ -130,12 +130,12 @@ export const UpdateBlog = () => {
           margin: "20px 0",
         }}
       >
-        <Typography variant="h2">Create Blog</Typography>
+        <Typography variant="h2">Update Blog</Typography>
       </Box>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
-            label="Image Url:"
+            label="Updated Image Url:"
             type="url"
             variant="outlined"
             value={imageURL}
@@ -146,7 +146,7 @@ export const UpdateBlog = () => {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            label="Title"
+            label="Updated Title"
             required
             type="text"
             variant="outlined"
@@ -157,7 +157,7 @@ export const UpdateBlog = () => {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            label="Description"
+            label="Updated Description"
             type="text"
             variant="outlined"
             multiline
