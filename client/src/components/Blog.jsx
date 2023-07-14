@@ -54,7 +54,7 @@ const Blog = () => {
   const blogsCollectionRef = collection(db, "posts");
   const [blogList, setBlogList] = useState([]);
 
-  const getMovieList = async () => {
+  const getBlogList = async () => {
     try {
       const snapshots = await getDocs(blogsCollectionRef);
       const docs = snapshots.docs.map((doc) => {
@@ -70,7 +70,7 @@ const Blog = () => {
   };
 
   useEffect(() => {
-    getMovieList();
+    getBlogList();
   }, []);
 
   const [expanded, setExpanded] = React.useState(false);
@@ -89,76 +89,91 @@ const Blog = () => {
     setExpanded(!expanded);
   };
 
+  const read = "read more............";
   return (
-      <Grid
-        container
-        spacing={2}
-        direction="row"
-        justifyContent="space-around"
-      >
-        {blogList.map((userr) => {
-          return (
-            <Grid container justifyContent="space-around" item xs={12} sm={6} md={6} lg={4} key={userr.id}>
-              <Card
-                sx={{ maxWidth: 345 , margin: "60px 40px 0"}}
-                key={userr?.id}
+    <Grid container spacing={2} direction="row" justifyContent="space-around">
+      {blogList.map((userr) => {
+        return (
+          <Grid
+            container
+            justifyContent="space-around"
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={4}
+            key={userr.id}
+          >
+            <Card sx={{ maxWidth: 345, margin: "60px 40px 0" }} key={userr?.id}>
+              <CardMedia
+                component="img"
+                height="220"
+                image={userr?.imgUrl}
+                alt={userr?.shortDesc}
+                sx={{ marginBottom: "10px" }}
                 onClick={() => navigate(`/currentBlog/${userr.id}`)}
-              >
-                <CardMedia
-                  component="img"
-                  height="220"
-                  image={userr?.imgUrl}
-                  alt={userr?.shortDesc}
-                  sx={{ marginBottom: "10px" }}
-                />
-                <CardContent>
-                  <Typography variant="h5" color="primary.main">
-                    {userr?.shortDesc?.slice(0, 30)}
-                  </Typography>
-                  {/* {`${userr.Timestamp.toDate()}`} */}
-                  <Typography variant="body2" color="text.secondary" mt={1.8}>
-                    {userr?.longDesc.slice(0, 180)}
-                  </Typography>
-                  <Typography variant="subtitle2" color="#75C2F6" marginTop="30px">
-                {`@${userr?.user?.toLowerCase()}`}
-              </Typography>
-                </CardContent>
+              />
+              <CardContent>
+                <Typography
+                  variant="h5"
+                  color="primary.main"
+                  onClick={() => navigate(`/currentBlog/${userr.id}`)}
+                >
+                  {userr?.shortDesc?.slice(0, 30)}
+                </Typography>
+                {/* {`${userr.Timestamp.toDate()}`} */}
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  mt={1.8}
+                  onClick={() => navigate(`/currentBlog/${userr.id}`)}
+                >
+                  {`${userr?.longDesc.slice(0, 180)} ${read}`}
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  color="#75C2F6"
+                  marginTop="30px"
+                >
+                  {`@${userr?.user?.toLowerCase()}`}
+                </Typography>
+              </CardContent>
 
-                <Box sx={{ transform: "translateZ(0px)", flexGrow: 1 }}>
-                  <FormControl
-                    component="fieldset"
-                    sx={{ mt: 1, display: "flex" }}
+              <Box sx={{ transform: "translateZ(0px)", flexGrow: 1 }}>
+                <FormControl
+                  component="fieldset"
+                  sx={{ mt: 1, display: "flex" }}
+                >
+                  <RadioGroup
+                    aria-label="direction"
+                    name="direction"
+                    value={"direction"}
+                    onChange={handleDirectionChange}
+                    row
+                  ></RadioGroup>
+                </FormControl>
+                <Box sx={{ position: "relative", mt: 10 }}>
+                  <StyledSpeedDial
+                    ariaLabel="SpeedDial playground example"
+                    hidden={hidden}
+                    icon={<SpeedDialIcon />}
+                    direction={"left"}
                   >
-                    <RadioGroup
-                      aria-label="direction"
-                      name="direction"
-                      value={"direction"}
-                      onChange={handleDirectionChange}
-                      row
-                    ></RadioGroup>
-                  </FormControl>
-                  <Box sx={{ position: "relative", mt: 10 }}>
-                    <StyledSpeedDial
-                      ariaLabel="SpeedDial playground example"
-                      hidden={hidden}
-                      icon={<SpeedDialIcon />}
-                      direction={"left"}
-                    >
-                      {actions.map((action) => (
-                        <SpeedDialAction
-                          key={action.name}
-                          icon={action.icon}
-                          tooltipTitle={action.name}
-                        />
-                      ))}
-                    </StyledSpeedDial>
-                  </Box>
+                    {actions.map((action) => (
+                      <SpeedDialAction
+                        key={action.name}
+                        icon={action.icon}
+                        tooltipTitle={action.name}
+                      />
+                    ))}
+                  </StyledSpeedDial>
                 </Box>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
+              </Box>
+            </Card>
+          </Grid>
+        );
+      })}
+    </Grid>
     // </Box>
   );
 };
