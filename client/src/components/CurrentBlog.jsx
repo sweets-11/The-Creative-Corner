@@ -114,8 +114,8 @@ export const UpdateBlog = () => {
   const [imageURL, setImageURL] = useState("");
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
-  const currentUser = auth?.currentUser?.uid;
   const [thisBlogPost, setThisBlogPost] = useState([]);
+  const currentUser = auth?.currentUser?.uid;
 
   const getUserdetails = async () => {
     const docRef = doc(db, "posts", userID);

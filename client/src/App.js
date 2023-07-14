@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./global/Home";
 import Auth from "./auth/Auth";
 import { About, ContactUs, CreateBlog } from "./components/index";
@@ -11,6 +7,7 @@ import { useSelector } from "react-redux";
 import CurrentBlog from "./components/CurrentBlog";
 import Protected from "./Protected";
 import { UpdateBlog } from "./components/CurrentBlog";
+import MyBlogs from "./components/MyBlogs";
 
 const App = () => {
   const initialEmail = Boolean(useSelector((state) => state.auth.email));
@@ -36,6 +33,11 @@ const App = () => {
         <Route
           path="/updateBlog/:userID"
           element={<Protected Component={UpdateBlog} />}
+        />
+
+        <Route
+          path="myblogs"
+          element={<Protected Component={MyBlogs} />}
         />
       </Routes>
     </Router>
