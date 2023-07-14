@@ -12,6 +12,7 @@ import {
   SpeedDial,
   SpeedDialIcon,
   SpeedDialAction,
+  Grid,
 } from "@mui/material";
 
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
@@ -89,62 +90,76 @@ const Blog = () => {
   };
 
   return (
-    <Box sx={{display:{sm: "none",md: "flex", lg:"flex"}}} justifyContent="space-around">
-      {blogList.map((userr) => {
-        return (
-          <Card
-            sx={{ maxWidth: 345, margin: "50px 40px 0" }}
-            key={userr.id}
-            onClick={() => navigate(`/currentBlog/:${userr.id}`)}
-          >
-            <CardMedia
-              component="img"
-              height="220"
-              image={userr.imgUrl}
-              alt={userr.shortDesc}
-              sx={{ marginBottom: "10px" }}
-            />
-            <CardContent>
-              <Typography variant="h5" color="primary.main">
-                {userr.shortDesc.slice(0, 30)}
+      <Grid
+        container
+        spacing={2}
+        direction="row"
+        justifyContent="space-around"
+      >
+        {blogList.map((userr) => {
+          return (
+            <Grid container justifyContent="space-around" item xs={12} sm={6} md={6} lg={4} key={userr.id}>
+              <Card
+                sx={{ maxWidth: 345 , margin: "60px 40px 0"}}
+                key={userr?.id}
+                onClick={() => navigate(`/currentBlog/${userr.id}`)}
+              >
+                <CardMedia
+                  component="img"
+                  height="220"
+                  image={userr?.imgUrl}
+                  alt={userr?.shortDesc}
+                  sx={{ marginBottom: "10px" }}
+                />
+                <CardContent>
+                  <Typography variant="h5" color="primary.main">
+                    {userr?.shortDesc?.slice(0, 30)}
+                  </Typography>
+                  {/* {`${userr.Timestamp.toDate()}`} */}
+                  <Typography variant="body2" color="text.secondary" mt={1.8}>
+                    {userr?.longDesc.slice(0, 180)}
+                  </Typography>
+                  <Typography variant="subtitle2" color="#75C2F6" marginTop="30px">
+                {`@${userr?.user?.toLowerCase()}`}
               </Typography>
-              {/* {`${userr.Timestamp.toDate()}`} */}
-              <Typography variant="body2" color="text.secondary" mt={1.8}>
-                {userr.longDesc.slice(0, 180)}
-              </Typography>
-            </CardContent>
+                </CardContent>
 
-            <Box sx={{ transform: "translateZ(0px)", flexGrow: 1 }}>
-              <FormControl component="fieldset" sx={{ mt: 1, display: "flex" }}>
-                <RadioGroup
-                  aria-label="direction"
-                  name="direction"
-                  value={"direction"}
-                  onChange={handleDirectionChange}
-                  row
-                ></RadioGroup>
-              </FormControl>
-              <Box sx={{ position: "relative", mt: 10 }}>
-                <StyledSpeedDial
-                  ariaLabel="SpeedDial playground example"
-                  hidden={hidden}
-                  icon={<SpeedDialIcon />}
-                  direction={"left"}
-                >
-                  {actions.map((action) => (
-                    <SpeedDialAction
-                      key={action.name}
-                      icon={action.icon}
-                      tooltipTitle={action.name}
-                    />
-                  ))}
-                </StyledSpeedDial>
-              </Box>
-            </Box>
-          </Card>
-        );
-      })}
-    </Box>
+                <Box sx={{ transform: "translateZ(0px)", flexGrow: 1 }}>
+                  <FormControl
+                    component="fieldset"
+                    sx={{ mt: 1, display: "flex" }}
+                  >
+                    <RadioGroup
+                      aria-label="direction"
+                      name="direction"
+                      value={"direction"}
+                      onChange={handleDirectionChange}
+                      row
+                    ></RadioGroup>
+                  </FormControl>
+                  <Box sx={{ position: "relative", mt: 10 }}>
+                    <StyledSpeedDial
+                      ariaLabel="SpeedDial playground example"
+                      hidden={hidden}
+                      icon={<SpeedDialIcon />}
+                      direction={"left"}
+                    >
+                      {actions.map((action) => (
+                        <SpeedDialAction
+                          key={action.name}
+                          icon={action.icon}
+                          tooltipTitle={action.name}
+                        />
+                      ))}
+                    </StyledSpeedDial>
+                  </Box>
+                </Box>
+              </Card>
+            </Grid>
+          );
+        })}
+      </Grid>
+    // </Box>
   );
 };
 

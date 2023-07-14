@@ -86,7 +86,7 @@ const Footer = () => {
           <Typography>(7032)333-4444-552</Typography>
         </Grid>
       </Box>
-      <Box item xs={12} sm={6} md={4} lg={3} display="flex">
+      <Box  display="flex">
         <Typography
           color={shades.neutral[600]}
           margin={"30px auto 0"}

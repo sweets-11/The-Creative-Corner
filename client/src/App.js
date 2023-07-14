@@ -23,7 +23,7 @@ const App = () => {
           <Route path="/savedBlogs" element={<SavedBlogs />} />
           <Route path="/contactUs" element={<ContactUs />} />
           <Route path="/createBlog" element={<CreateBlog />} />
-          <Route path="/currentBlog/:blogId}" element={<CurrentBlog />} />
+          <Route path="/currentBlog/:userID" element={<CurrentBlog />} />
         </Routes>
       </Router>
   );
