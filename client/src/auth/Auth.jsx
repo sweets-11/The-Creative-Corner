@@ -1,7 +1,7 @@
 import "./App.css";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { app } from "../config/firebase";
-import { Box, Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login, profile } from "../store";
@@ -20,7 +20,7 @@ const Auth = () => {
         const email = result.user.email;
         const photoUrl = result.user.photoURL;
 
-        dispatch(profile({ "pic": photoUrl }));
+        dispatch(profile({ pic: photoUrl }));
         dispatch(login({ name: name, email: email }));
         navigate("/home");
       })
@@ -30,22 +30,33 @@ const Auth = () => {
   };
 
   return (
-    <>
+    <Container>
       <Box
         display="flex"
+        flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        marginTop="25px"
+        // paddingTop="200px"
       >
-        <Typography variant="h1">Welcome TO The Creative Corner</Typography>
-      </Box>
+        <Typography
+          fontFamily="Cinzel, sans-serif"
+          sx={{ fontSize: { xs: "1.3rem", sm: "3rem", lg: "3rem" } , marginTop: "100px" }}
+        >
+          Welcome TO The Creative Corner
+        </Typography>
+        <Typography
+          fontFamily="Fauna One, sans-serif"
+          sx={{ fontSize: { xs: ".9rem", sm: "2rem", lg: "2rem" }, marginTop: "20px" }}
+          >
+          Sign In With Google to Continue
+        </Typography>
+          </Box>
       <div className="loginPage">
-        <p>Sign In With Google to Continue</p>
         <button className="login-with-google-btn" onClick={signInWithGoogle}>
           Sign in with Google
         </button>
       </div>
-    </>
+    </Container>
   );
 };
 
