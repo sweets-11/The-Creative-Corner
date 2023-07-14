@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../config/firebase";
-import { getDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { db, auth } from "../config/firebase";
+import {
+  getDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+  getDocs,
+  collection,
+} from "firebase/firestore";
 import Navbar from "../global/Navbar/Navbar";
 import Footer from "../global/Footer";
 import {
@@ -17,10 +24,13 @@ const CurrentBlog = () => {
   const { userID } = useParams();
   const navigate = useNavigate();
   const [thisBlogPost, setThisBlogPost] = useState([]);
+  const currentUser = auth?.currentUser?.uid;
 
   const deletePost = async () => {
     const postDoc = doc(db, "posts", userID);
-    await deleteDoc(postDoc);
+    if (thisBlogPost?.CurrentUserId === currentUser) {
+      await deleteDoc(postDoc);
+    }
     navigate("/home");
   };
 
@@ -71,15 +81,25 @@ const CurrentBlog = () => {
             </Box>
           </Box>
         </Grid>
-        <Button
-          variant="outlined"
-          onClick={() => navigate(`/updateBlog/${userID}`)}
-        >
-          Update
-        </Button>
-        <Button variant="outlined" onClick={deletePost}>
-          Delete This Blog
-        </Button>
+        {/* if !current user don't show these buttons */}
+        {thisBlogPost?.CurrentUserId === currentUser ? (
+          <Button
+            variant="outlined"
+            onClick={() => navigate(`/updateBlog/${userID}`)}
+          >
+            Update
+          </Button>
+        ) : (
+          ""
+        )}
+
+        {thisBlogPost?.CurrentUserId === currentUser ? (
+          <Button variant="outlined" onClick={deletePost}>
+            Delete This Blog
+          </Button>
+        ) : (
+          ""
+        )}
       </Grid>
       <Footer />
     </>
@@ -94,14 +114,34 @@ export const UpdateBlog = () => {
   const [imageURL, setImageURL] = useState("");
   const [blogTitle, setBlogTitle] = useState("");
   const [blogDescription, setBlogDescription] = useState("");
+  const currentUser = auth?.currentUser?.uid;
+  const [thisBlogPost, setThisBlogPost] = useState([]);
+
+  const getUserdetails = async () => {
+    const docRef = doc(db, "posts", userID);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setThisBlogPost(docSnap.data());
+    } else {
+      console.log("No such document!");
+    }
+  };
+
+  useEffect(() => {
+    getUserdetails();
+  }, []);
 
   const updateMovieTitle = async () => {
     const blogPost = doc(db, "posts", userID);
-    await updateDoc(blogPost, {
-      imgUrl: imageURL,
-      shortDesc: blogTitle,
-      longDesc: blogDescription,
-    });
+    if (thisBlogPost?.CurrentUserId === currentUser) {
+      await updateDoc(blogPost, {
+        imgUrl: imageURL,
+        shortDesc: blogTitle,
+        longDesc: blogDescription,
+      });
+    }
+
     navigate("/home");
   };
 
