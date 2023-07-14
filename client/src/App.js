@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 import Home from "./global/Home";
 import Auth from "./auth/Auth";

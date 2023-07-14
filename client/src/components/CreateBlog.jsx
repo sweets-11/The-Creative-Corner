@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./createBlog.css";
 import { useNavigate } from "react-router-dom";
-import { db, storage, auth } from "../config/firebase";
+import { db, auth } from "../config/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 import {

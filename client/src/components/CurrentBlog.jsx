@@ -1,29 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../config/firebase";
-import {
-  getDoc,
-  doc,
-  deleteDoc,
-  collection,
-  updateDoc,
-} from "firebase/firestore";
+import { getDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import Navbar from "../global/Navbar/Navbar";
 import Footer from "../global/Footer";
 import {
-  Card,
-  CardMedia,
-  CardContent,
-  IconButton,
   Button,
   Container,
   Typography,
   TextField,
   Box,
-  FormControl,
-  RadioGroup,
-  SpeedDial,
-  SpeedDialIcon,
-  SpeedDialAction,
   Grid,
 } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
@@ -117,7 +102,7 @@ export const UpdateBlog = () => {
       shortDesc: blogTitle,
       longDesc: blogDescription,
     });
-    navigate("/home")
+    navigate("/home");
   };
 
   return (
