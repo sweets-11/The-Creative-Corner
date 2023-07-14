@@ -1,15 +1,12 @@
 .loginPage {
-  width: 100vw;
-  height: calc(90vh - 80px);
+  width: 100%;
+  height: calc(50vh - 80px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.loginPage p {
-  font-size: 25px;
-}
 
 /* GOOGLE BUTTOn */
 .login-with-google-btn {

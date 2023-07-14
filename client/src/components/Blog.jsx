@@ -1,24 +1,26 @@
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import * as React from "react";
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import RadioGroup from "@mui/material/RadioGroup";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  IconButton,
+  Typography,
+  Box,
+  FormControl,
+  RadioGroup,
+  SpeedDial,
+  SpeedDialIcon,
+  SpeedDialAction,
+  Grid,
+} from "@mui/material";
+
 import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
-import PrintIcon from "@mui/icons-material/Print";
-import ShareIcon from "@mui/icons-material/Share";
+import { useNavigate } from "react-router-dom";
+
+import { db } from "../config/firebase";
+import { getDocs, collection } from "firebase/firestore";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -46,11 +48,31 @@ const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
 const actions = [
   { icon: <FileCopyIcon />, name: "Copy" },
   { icon: <SaveIcon />, name: "Save" },
-  { icon: <PrintIcon />, name: "Print" },
-  { icon: <ShareIcon />, name: "Share" },
 ];
-
 const Blog = () => {
+  const navigate = useNavigate();
+  const blogsCollectionRef = collection(db, "posts");
+  const [blogList, setBlogList] = useState([]);
+
+  const getBlogList = async () => {
+    try {
+      const snapshots = await getDocs(blogsCollectionRef);
+      const docs = snapshots.docs.map((doc) => {
+        const data = doc.data();
+        console.log(data);
+        data.id = doc.id;
+        return data;
+      });
+      setBlogList(docs);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getBlogList();
+  }, []);
+
   const [expanded, setExpanded] = React.useState(false);
   const [direction, setDirection] = React.useState("up");
   const [hidden, setHidden] = React.useState(false);
@@ -67,65 +89,92 @@ const Blog = () => {
     setExpanded(!expanded);
   };
 
+  const read = "read more............";
   return (
-    <Card sx={{ maxWidth: 345, margin: "50px 40px 0"}}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
-      <CardMedia
-        component="img"
-        height="220"
-        image="https://images.unsplash.com/photo-1514464846219-8745c95d475b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=821&q=80"
-        alt="Paella dish"
-        sx={{marginBottom:"10px"}}
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
-      </CardContent>
-
-      <Box sx={{ transform: "translateZ(0px)", flexGrow: 1 }}>
-        <FormControl component="fieldset" sx={{ mt: 1, display: "flex" }}>
-          <RadioGroup
-            aria-label="direction"
-            name="direction"
-            value={"direction"}
-            onChange={handleDirectionChange}
-            row
-          ></RadioGroup>
-        </FormControl>
-        <Box sx={{ position: "relative", mt: 10 }}>
-          <StyledSpeedDial
-            ariaLabel="SpeedDial playground example"
-            hidden={hidden}
-            icon={<SpeedDialIcon />}
-            direction={"left"}
+    <Grid container spacing={2} direction="row" justifyContent="space-around">
+      {blogList.map((userr) => {
+        return (
+          <Grid
+            container
+            justifyContent="space-around"
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={4}
+            key={userr.id}
           >
-            {actions.map((action) => (
-              <SpeedDialAction
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
+            <Card sx={{ maxWidth: 345, margin: "60px 40px 0" }} key={userr?.id}>
+              <CardMedia
+                component="img"
+                height="220"
+                image={userr?.imgUrl}
+                alt={userr?.shortDesc}
+                sx={{ marginBottom: "10px" }}
+                onClick={() => navigate(`/currentBlog/${userr.id}`)}
               />
-            ))}
-          </StyledSpeedDial>
-        </Box>
-      </Box>
-    </Card>
+              <CardContent>
+                <Typography
+                  variant="h5"
+                  color="primary.main"
+                  onClick={() => navigate(`/currentBlog/${userr.id}`)}
+                >
+                  {userr?.shortDesc?.slice(0, 30)}
+                </Typography>
+                {/* {`${userr.Timestamp.toDate()}`} */}
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  mt={1.8}
+                  onClick={() => navigate(`/currentBlog/${userr.id}`)}
+                >
+                  {`${userr?.longDesc.slice(0, 180)} ${read}`}
+                </Typography>
+                <Typography
+                  variant="subtitle2"
+                  color="#75C2F6"
+                  marginTop="30px"
+                >
+                  {`@${userr?.user?.toLowerCase()}`}
+                </Typography>
+              </CardContent>
+
+              <Box sx={{ transform: "translateZ(0px)", flexGrow: 1 }}>
+                <FormControl
+                  component="fieldset"
+                  sx={{ mt: 1, display: "flex" }}
+                >
+                  <RadioGroup
+                    aria-label="direction"
+                    name="direction"
+                    value={"direction"}
+                    onChange={handleDirectionChange}
+                    row
+                  ></RadioGroup>
+                </FormControl>
+                <Box sx={{ position: "relative", mt: 10 }}>
+                  <StyledSpeedDial
+                    ariaLabel="SpeedDial playground example"
+                    hidden={hidden}
+                    icon={<SpeedDialIcon />}
+                    direction={"left"}
+                  >
+                    {actions.map((action) => (
+                      <SpeedDialAction
+                        key={action.name}
+                        icon={action.icon}
+                        tooltipTitle={action.name}
+                      />
+                    ))}
+                  </StyledSpeedDial>
+                </Box>
+              </Box>
+            </Card>
+          </Grid>
+        );
+      })}
+    </Grid>
+    // </Box>
   );
 };
 

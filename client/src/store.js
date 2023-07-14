@@ -5,6 +5,7 @@ const authSlice = createSlice({
   initialState: {
     name: localStorage.getItem("name"),
     email: localStorage.getItem("email"),
+    pic : localStorage.getItem("pic"),
   },
   reducers: {
     login: (state, action) => {
@@ -17,10 +18,16 @@ const authSlice = createSlice({
       state.email = localStorage.removeItem('email');
       localStorage.clear();
     },
+
+    profile: (state, action) => {
+      const { pic } = action.payload;
+      state.pic = localStorage.setItem('pic', pic);
+    }
+
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout,profile} = authSlice.actions;
 export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,

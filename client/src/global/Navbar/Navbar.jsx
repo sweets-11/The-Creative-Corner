@@ -126,7 +126,7 @@ const Navbar = (theme) => {
                     style={{ textDecoration: "none" }}
                     to={
                       page === "Home"
-                        ? "/"
+                        ? "/home"
                         : `/${page.replace(/\s+/g, "").toLowerCase()}`
                     }
                   >
@@ -168,7 +168,7 @@ const Navbar = (theme) => {
                   style={{ textDecoration: "none" }}
                   to={
                     page === "Home"
-                      ? "/"
+                      ? "/home"
                       : `/${page.replace(/\s+/g, "").toLowerCase()}`
                   }
                 >
@@ -210,8 +210,15 @@ const Navbar = (theme) => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>    
+              <Avatar aria-label="recipe">
+                <img
+                  style={{ width: "100%" }}
+                  src={localStorage.getItem("pic")}
+                  alt=""
+                />
+              </Avatar>
+        
               </IconButton>
             </Tooltip>
             <Menu
