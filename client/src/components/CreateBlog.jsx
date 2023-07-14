@@ -45,7 +45,7 @@ const CreateBlog = () => {
         CurrentUserId: auth?.currentUser?.uid,
         Timestamp: serverTimestamp(),
       });
-      alert("succ");
+      alert("Blog Created SuccessFully");
       navigate("/home");
     } catch (err) {
       console.error(err);
