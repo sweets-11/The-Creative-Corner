@@ -129,9 +129,6 @@ export const UpdateBlog = () => {
           alignItems: "center",
           margin: "20px 0",
         }}
-        component="form"
-        autoComplete="off"
-        noValidate
       >
         <Typography variant="h2">Create Blog</Typography>
       </Box>
@@ -179,7 +176,7 @@ export const UpdateBlog = () => {
             fullWidth
             onClick={updateMovieTitle}
           >
-            Upload
+            Update
           </Button>
         </Grid>
       </Grid>
