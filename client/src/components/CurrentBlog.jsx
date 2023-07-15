@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db, auth } from "../config/firebase";
+import "./CurrentBlog.css";
 import {
   getDoc,
   doc,
@@ -56,7 +57,6 @@ const CurrentBlog = () => {
         <Grid container justifyContent="space-around" item>
           <Box sx={{ margin: "60px 40px 0" }}>
             <img
-              width="50%"
               src={thisBlogPost?.imgUrl}
               alt={thisBlogPost?.shortDesc}
               sx={{ marginBottom: "10px" }}
