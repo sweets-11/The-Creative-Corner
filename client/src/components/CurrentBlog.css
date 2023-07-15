@@ -1,0 +1,17 @@
+img{
+    width: 50%;
+}
+
+
+@media screen and (max-width: 992px) {
+    img {
+      width: 70%;
+    }
+  }
+  
+  /* On screens that are 600px or less, set the background color to olive */
+  @media screen and (max-width: 600px) {
+    img {
+      width: 100%;
+    }
+  }
